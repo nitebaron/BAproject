@@ -1,5 +1,8 @@
-%Viktoria
-%example run: initial(50.79242585,3.742368096;
+%this script designs a user-friendly app that will allow for easy 
+%selection of different configurations of the cryostat.
+%at the moment it also calls some functions that contribute to the head load
+%example run: initial(50.79242585,3.742368096);
+%inputs are initial plate temperature and outputs will be different heat loads
 function initial(Xq,Yq)
 %current leads configuration
 
