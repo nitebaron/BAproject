@@ -1,26 +1,27 @@
-%this function uses spline interpolation to get a coldhead power
-%from a set of data
+%this function uses spline interpolation to get a coldhead power using a
+%set of measurements and the user defined choice for cooling power
 
-inter = readtable('interpolation.xlsx','ReadVariableNames',false);
+function [powers] = coldhead(Xq,Yq)
 
-x = table2array(inter(:,1));
-x = x(2:end);
-x = str2num(cell2mat(x));
+%read excel table
+interpolate = readtable('interpolation.xlsx','ReadVariableNames',false);
 
-y = table2array(inter(:,2));
-y = y(2:end);
-y = str2double(y);
+%extract measured data out
+x = convert(interpolate,1);
+y = convert(interpolate,2);
+f = convert(interpolate,3);
+s = convert(interpolate,4);
 
-f = table2array(inter(:,3));
-f = f(2:end);
-f = str2double(f);
+%conduct interpolation
+pt1 = griddata(x,y,f,Xq,Yq);
+pt2 = griddata(x,y,s,Xq,Yq);
 
-f2 = inter(:,4);
-f2 = table2array(f2);
-f2 = f2(2:end);
-f2 = str2double(f2);
+powers = [pt1 pt2];
+end
 
-Xq = 50.79242585;
-Yq = 3.742368096;
-
-vq = griddata(x,y,f,Xq,Yq)
+%this function converts data to format that can be used for interpolation
+function data = convert(table,index)
+data = table2array(table(:,index));
+data = data(2:end);
+data = cellfun(@str2num,data)
+end
